@@ -24,6 +24,7 @@ extension ViewModel {
             onValue: @escaping (T) -> Void
         ) {
             trigger
+                .filter { _ in !isLoading.load() }
                 .handleEvents(receiveOutput: { _ in isLoading.store(true) })
                 .flatMap { input in
                     return action(input)

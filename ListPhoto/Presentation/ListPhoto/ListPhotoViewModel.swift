@@ -7,10 +7,18 @@
 
 import Foundation
 import Combine
+import Domain
 
 struct ListPhotoViewModel {
     let navigator: ListPhotoNavigatorType
     let useCase: ListPhotoUseCaseType
+    
+    var imageUseCase: ImageUseCase {
+        guard let uc = useCase as? ImageUseCase else {
+            fatalError("useCase must conform to ImageUseCase")
+        }
+        return uc
+    }
     
     init(navigator: ListPhotoNavigatorType, useCase: ListPhotoUseCaseType) {
         self.navigator = navigator
@@ -20,9 +28,10 @@ struct ListPhotoViewModel {
 
 extension ListPhotoViewModel: ViewModel {
     struct Input {
-        var loadData: AnyPublisher<String, Never>
-        var loadMoreData: AnyPublisher<String, Never>
-        var reloadData: AnyPublisher<String, Never>
+        var loadData: AnyPublisher<Void, Never>
+        var loadMoreData: AnyPublisher<Void, Never>
+        var reloadData: AnyPublisher<Void, Never>
+        var searchData: AnyPublisher<String, Never>
     }
     
     struct Output {
@@ -35,8 +44,9 @@ extension ListPhotoViewModel: ViewModel {
     
     func transform(_ input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
         let output = Output()
+        var photos: [Photo] = []
         let errorCombine = PassthroughSubject<Error, Never>()
-        var pageInfo = PagingInfo(page: 1, itemsPerPage: 100)
+        var pageInfo = PagingInfo(page: 1, itemsPerPage: 10)
         errorCombine
             .sinkOnMain(output.$error.send)
             .store(in: &cancellables)
@@ -46,26 +56,34 @@ extension ListPhotoViewModel: ViewModel {
             isLoading: output.$isLoading,
             errorSubject: errorCombine,
             cancellables: &cancellables,
-            action: {_ in
-                print("Action")
+            action: { _ in
+                print("Start load data at \(Date())")
                 pageInfo.page = 1
-                return useCase.getListPhoto(pageInfo: pageInfo)
+                return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
                 output.$photos.send(value)
+                photos = value
             }
         )
         
+        let loadMoreTrigger = input.loadMoreData
+            .filter { !output.$isLoading.load() && !output.$isReloading.load() && !photos.isEmpty }
+            .eraseToAnyPublisher()
         bindPublisher(
-            trigger: input.loadMoreData,
+            trigger: loadMoreTrigger,
             isLoading: output.$isLoadingMore,
             errorSubject: errorCombine,
             cancellables: &cancellables,
-            action: {_ in 
+            action: { _ in
+                print("Start loadMore data at \(Date())")
                 pageInfo.page += 1
-                return useCase.getListPhoto(pageInfo: pageInfo)
+                return useCase.getPhotos(pageInfo: pageInfo)
             },
-            onValue: { output.$photos.send(output.photos + $0) }
+            onValue: { value in
+                output.$photos.send(output.photos + value)
+                photos = output.photos + value
+            }
         )
         
         bindPublisher(
@@ -73,12 +91,25 @@ extension ListPhotoViewModel: ViewModel {
             isLoading: output.$isReloading,
             errorSubject: errorCombine,
             cancellables: &cancellables,
-            action: {_ in 
+            action: { _ in
+                print("Start reload data at \(Date())")
                 pageInfo.page = 1
-                return useCase.getListPhoto(pageInfo: pageInfo)
+                return useCase.getPhotos(pageInfo: pageInfo)
             },
-            onValue: { output.$photos.send($0) }
+            onValue: { value in
+                output.$photos.send(value)
+                photos = value
+            }
         )
+        
+        input.searchData
+            .subscribe(on: DispatchQueue.global())
+            .map { searchText -> [Photo] in
+                let lower = searchText.lowercased()
+                return photos.filter { $0.id.lowercased().contains(lower) || $0.author.lowercased().contains(lower) }
+            }
+            .sinkOnMain(output.$photos.send)
+            .store(in: &cancellables)
         
         return output
     }

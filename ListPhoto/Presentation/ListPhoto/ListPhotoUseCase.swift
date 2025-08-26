@@ -7,18 +7,17 @@
 
 import Foundation
 import Combine
+import Domain
+import UIKit
 
 protocol ListPhotoUseCaseType {
-    func getListPhoto(pageInfo: PagingInfo) -> AnyPublisher<[Photo], Error>
+    func getPhotos(pageInfo: PagingInfo) -> AnyPublisher<[Photo], Error>
+    func fetchImageData(urlString: String,
+                        targetSize: CGSize,
+                        scale: CGFloat) -> AnyPublisher<UIImage, Error>
 }
 
-struct ListPhotoUseCase: ListPhotoUseCaseType {
-    func getListPhoto(pageInfo: PagingInfo) -> AnyPublisher<[Photo], Error> {
-        Deferred {
-            return Just(Array(repeating: Photo.mock(), count: 100))
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-        .eraseToAnyPublisher()
-    }
+struct ListPhotoUseCase: ListPhotoUseCaseType, GetPhotosUseCase, ImageUseCase {
+    var imageRepository: Domain.ImageRepository
+    var photoRepository: Domain.PhotoRepository
 }

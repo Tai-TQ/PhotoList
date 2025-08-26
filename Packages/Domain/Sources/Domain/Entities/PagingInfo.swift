@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 public struct PagingInfo {
     public var page: Int
     public var itemsPerPage: Int

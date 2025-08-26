@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Data
 
 protocol ListPhotoAssembler {
     func resolve(navigation: UINavigationController) -> ListPhotoViewController
@@ -36,6 +37,9 @@ extension ListPhotoAssembler where Self: DefaultAssembler {
     }
 
     func resolve() -> ListPhotoUseCaseType {
-        ListPhotoUseCase()
+        ListPhotoUseCase(
+            imageRepository: resolveImageRepository(),
+            photoRepository: resolvePhotoRepository()
+        )
     }
 }
