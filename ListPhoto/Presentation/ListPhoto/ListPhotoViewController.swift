@@ -36,6 +36,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         tableView.dataSource = self
 //        tableView.prefetchDataSource = self
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 300
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,14 +98,35 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         )
         
         let output = viewModel.transform(input, cancellables: &cancellables)
-//        loadData.send()
+        loadData.send()
         
         output.$photos
             .dropFirst()
             .sinkOnMain({ [weak self] data in
                 print("Load data success at \(Date())")
-                self?.listPhoto = data
-                self?.tableView.reloadData()
+                guard let self = self else { return }
+                
+                let oldCount = self.listPhoto.count
+                let newCount = data.count
+                
+                if oldCount == 0 || newCount <= oldCount { // load or reload
+                    print("Load/Reload data success at \(Date())")
+                    self.listPhoto = data
+                    self.tableView.reloadData()
+                } else { // loadmore
+                    print("Load more data success at \(Date())")
+                    let startIndex = oldCount
+                    let endIndex = newCount - 1
+                    
+                    self.listPhoto = data
+                    
+                    var indexPaths: [IndexPath] = []
+                    for i in startIndex...endIndex {
+                        indexPaths.append(IndexPath(row: i, section: 0))
+                    }
+                    
+                    self.tableView.insertRows(at: indexPaths, with: .none)
+                }
             })
             .store(in: &cancellables)
         
