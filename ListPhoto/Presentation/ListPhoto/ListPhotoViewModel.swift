@@ -13,13 +13,6 @@ struct ListPhotoViewModel {
     let navigator: ListPhotoNavigatorType
     let useCase: ListPhotoUseCaseType
 
-    var imageUseCase: ImageUseCase {
-        guard let uc = useCase as? ImageUseCase else {
-            fatalError("useCase must conform to ImageUseCase")
-        }
-        return uc
-    }
-
     init(navigator: ListPhotoNavigatorType, useCase: ListPhotoUseCaseType) {
         self.navigator = navigator
         self.useCase = useCase

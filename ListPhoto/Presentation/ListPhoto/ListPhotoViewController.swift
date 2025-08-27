@@ -216,7 +216,7 @@ extension ListPhotoViewController: UITableViewDelegate {
         let photo = listPhoto[indexPath.row]
         let targetSize = photo.displayedSize(for: UIScreen.main.bounds.width)
 
-        photoCell.loadImage(urlString: photo.url, imageUseCase: viewModel.imageUseCase, targetSize: targetSize)
+        photoCell.loadImage(urlString: photo.url, imageUseCase: viewModel.useCase, targetSize: targetSize)
 
         if !isLoadingMore,
            indexPath.row >= listPhoto.count - 10,

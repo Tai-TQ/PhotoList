@@ -1,0 +1,26 @@
+{
+  "configurations" : [
+    {
+      "id" : "77F85487-9ED7-4CAC-B68E-CF2E3F4E620D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "distributor" : "com.apple.TestFlight",
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:ListPhoto.xcodeproj",
+        "identifier" : "6EAA64BE2E5C695A00F6FA99",
+        "name" : "ListPhotoTests"
+      }
+    }
+  ],
+  "version" : 1
+}

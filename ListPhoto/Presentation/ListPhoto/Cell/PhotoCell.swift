@@ -80,7 +80,7 @@ class PhotoCell: UITableViewCell {
         authorLabel.text = "Author: \(photo.author)"
     }
 
-    func loadImage(urlString: String, imageUseCase: ImageUseCase, targetSize: CGSize) {
+    func loadImage(urlString: String, imageUseCase: ListPhotoUseCaseType, targetSize: CGSize) {
         photoImageView.setImage(urlString: urlString, imageUseCase: imageUseCase, targetSize: targetSize)
     }
 

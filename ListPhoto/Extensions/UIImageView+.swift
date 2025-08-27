@@ -30,7 +30,7 @@ extension UIImageView {
         }
     }
 
-    func setImage(urlString: String, placeholder: UIImage? = nil, imageUseCase: ImageUseCase, targetSize: CGSize) {
+    func setImage(urlString: String, placeholder: UIImage? = nil, imageUseCase: ListPhotoUseCaseType, targetSize: CGSize) {
         image = placeholder
 
         // Cancel previous requests
