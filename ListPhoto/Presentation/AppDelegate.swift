@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.rootViewController = UnitTestViewController()
             window.makeKeyAndVisible()
         } else {
-            let vm: AppViewModel = assembler.resolve(window: window)
-            vm.loadApp()
+            let vc: ListPhotoViewController = assembler.resolve(navigation: UINavigationController())
+            window.rootViewController = vc
         }
         return true
     }

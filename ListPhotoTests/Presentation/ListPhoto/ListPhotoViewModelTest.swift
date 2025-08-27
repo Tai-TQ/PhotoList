@@ -321,16 +321,28 @@ class ListPhotoViewModelTest: XCTestCase {
         let output = viewModel.transform(input, cancellables: &cancellables)
         var photos: [Photo]?
         var searchStepCount = 0
-
+        
         output.$photos
+            .dropFirst()
+            .sink { receivedPhotos in
+                photos = receivedPhotos
+                searchStepCount += 1
+                switch searchStepCount {
+                case 1:
+                    expectationInitialLoad.fulfill()
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+
+        output.$searchData
             .dropFirst()
             .sink { receivedPhotos in
                 photos = receivedPhotos
                 searchStepCount += 1
                 
                 switch searchStepCount {
-                case 1:
-                    expectationInitialLoad.fulfill()
                 case 2:
                     expectationSearch1.fulfill()
                 case 3:

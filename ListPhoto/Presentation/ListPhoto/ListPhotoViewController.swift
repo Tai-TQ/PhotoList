@@ -115,10 +115,10 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
                 let oldCount = self.listPhoto.count
                 let newCount = data.count
 
-                if oldCount == 0 || newCount <= oldCount {
+                if oldCount == 0 || newCount <= oldCount { // load or reload
                     self.listPhoto = data
                     self.tableView.reloadData()
-                } else {
+                } else { // loadmore
                     let startIndex = oldCount
                     let endIndex = newCount - 1
 
@@ -133,12 +133,21 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
                 }
             }
             .store(in: &cancellables)
+        
+        output.$searchData
+            .dropFirst()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] data in
+                guard let self = self else { return }
+                self.listPhoto = data
+                self.tableView.reloadData()
+            }
+            .store(in: &cancellables)
 
         output.$isLoading
             .subject
             .receive(on: RunLoop.main)
             .sink { [weak self] value in
-                self?.isLoadingMore = value
                 if value {
                     self?.showLoading()
                 } else {

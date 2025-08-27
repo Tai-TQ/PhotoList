@@ -100,8 +100,9 @@ class CustomTextField: UITextField {
 
     @objc
     private func textDidChange() {
-        guard let currentText = text, currentText != newText else { return }
-        text = newText // force showing english character instead of vietnamese. eg: 'Taif' instead of 'Tài'
+        if let currentText = text, currentText != newText {
+            text = newText // force showing english character instead of vietnamese. eg: 'Taif' instead of 'Tài'
+        }
         textPublisher.send(newText)
         showClearButtonIfNeed()
     }

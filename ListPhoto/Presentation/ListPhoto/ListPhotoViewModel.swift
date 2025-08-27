@@ -30,6 +30,7 @@ extension ListPhotoViewModel: ViewModel {
 
     struct Output {
         @Property var photos: [Photo] = []
+        @Property var searchData: [Photo] = []
         @Property var error: Error?
         @LoadingProperty var isLoading: Bool = false
         @LoadingProperty var isLoadingMore: Bool = false
@@ -40,7 +41,7 @@ extension ListPhotoViewModel: ViewModel {
         let output = Output()
         var photos: [Photo] = []
         let errorCombine = PassthroughSubject<Error, Never>()
-        var pageInfo = PagingInfo(page: 1, itemsPerPage: 30)
+        var pageInfo = PagingInfo(page: 1, itemsPerPage: 100)
         var hasMoreData = true
         errorCombine
             .receive(on: RunLoop.main)
@@ -117,6 +118,9 @@ extension ListPhotoViewModel: ViewModel {
 
         input.searchData
             .subscribe(on: DispatchQueue.global())
+            .handleEvents(receiveOutput: { value in
+                print(value)
+            })
             .map { searchText -> [Photo] in
                 if searchText.isEmpty {
                     return photos
@@ -125,7 +129,7 @@ extension ListPhotoViewModel: ViewModel {
                 return photos.filter { $0.id.lowercased().contains(lower) || $0.author.lowercased().contains(lower) }
             }
             .receive(on: RunLoop.main)
-            .sink(receiveValue: output.$photos.send)
+            .sink(receiveValue: output.$searchData.send)
             .store(in: &cancellables)
 
         input.toPhotoDetail

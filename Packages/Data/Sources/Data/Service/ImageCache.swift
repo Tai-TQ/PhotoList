@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCache {
+final class ImageCache {
     nonisolated(unsafe) static let shared = ImageCache()
 
     private let fileManager = FileManager.default
