@@ -16,8 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        let vm: AppViewModel = assembler.resolve(window: window)
-        vm.loadApp()
+        if NSClassFromString("XCTest") != nil { // test
+            window.rootViewController = UnitTestViewController()
+            window.makeKeyAndVisible()
+        } else {
+            let vm: AppViewModel = assembler.resolve(window: window)
+            vm.loadApp()
+        }
         return true
     }
 

@@ -32,6 +32,7 @@ extension ListPhotoViewModel: ViewModel {
         var loadMoreData: AnyPublisher<Void, Never>
         var reloadData: AnyPublisher<Void, Never>
         var searchData: AnyPublisher<String, Never>
+        var toPhotoDetail: AnyPublisher<String, Never>
     }
 
     struct Output {
@@ -87,9 +88,9 @@ extension ListPhotoViewModel: ViewModel {
             errorSubject: errorCombine,
             cancellables: &cancellables,
             action: { _ in
-                var pageInfo = pageInfo
-                pageInfo.page += 1
-                return useCase.getPhotos(pageInfo: pageInfo)
+                var nextPageInfo = pageInfo
+                nextPageInfo.page += 1
+                return useCase.getPhotos(pageInfo: nextPageInfo)
             },
             onValue: { value in
                 pageInfo.page += 1
@@ -132,6 +133,13 @@ extension ListPhotoViewModel: ViewModel {
             }
             .receive(on: RunLoop.main)
             .sink(receiveValue: output.$photos.send)
+            .store(in: &cancellables)
+
+        input.toPhotoDetail
+            .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: false)
+            .sink { id in
+                navigator.toPhotoDetail(id: id)
+            }
             .store(in: &cancellables)
 
         return output

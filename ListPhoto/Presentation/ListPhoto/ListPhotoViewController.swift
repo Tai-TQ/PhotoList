@@ -16,6 +16,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     private var loadData = PassthroughSubject<Void, Never>()
     private var reloadData = PassthroughSubject<Void, Never>()
     private var loadMoreData = PassthroughSubject<Void, Never>()
+    private var toPhotoDetail = PassthroughSubject<String, Never>()
 
     private var listPhoto: [Photo] = []
     private var isLoadingMore: Bool = false
@@ -90,15 +91,17 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     }
 
     func setupBindings() {
+        let searchDataTrigger = searchTextField.textPublisher
+            .dropFirst()
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .eraseToAnyPublisher()
         let input = ListPhotoViewModel.Input(
             loadData: loadData.eraseToAnyPublisher(),
             loadMoreData: loadMoreData.eraseToAnyPublisher(),
             reloadData: reloadData.eraseToAnyPublisher(),
-            searchData: searchTextField.textPublisher
-                .dropFirst()
-                .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-                .removeDuplicates()
-                .eraseToAnyPublisher()
+            searchData: searchDataTrigger,
+            toPhotoDetail: toPhotoDetail.eraseToAnyPublisher()
         )
 
         let output = viewModel.transform(input, cancellables: &cancellables)
@@ -227,5 +230,9 @@ extension ListPhotoViewController: UITableViewDelegate {
     func tableView(_: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt _: IndexPath) {
         guard let photoCell = cell as? PhotoCell else { return }
         photoCell.cancelImageLoad()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        toPhotoDetail.send(listPhoto[indexPath.row].id)
     }
 }

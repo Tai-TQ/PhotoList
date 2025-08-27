@@ -30,10 +30,10 @@ public struct Photo: Equatable {
 }
 
 public extension Photo {
-    static func mock() -> Photo {
+    static func mock(id: String = "1", author: String = "TQT" ) -> Photo {
         return Photo(
-            id: "102",
-            author: "Ben Moore",
+            id: id,
+            author: author,
             width: 4320,
             height: 3240,
             url: "https://unsplash.com/photos/pJILiyPdrXI"

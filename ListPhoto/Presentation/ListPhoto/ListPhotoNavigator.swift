@@ -8,12 +8,14 @@
 import UIKit
 
 protocol ListPhotoNavigatorType {
-    func toPhotoDetail()
+    func toPhotoDetail(id: String)
 }
 
 struct ListPhotoNavigator: ListPhotoNavigatorType {
     unowned let assembler: Assembler
     unowned let navigation: UINavigationController
 
-    func toPhotoDetail() {}
+    func toPhotoDetail(id: String) {
+        debugPrint("toPhotoDetail with id: \(id)")
+    }
 }
