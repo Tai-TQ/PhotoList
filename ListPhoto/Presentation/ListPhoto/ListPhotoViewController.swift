@@ -16,13 +16,13 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     private var loadData = PassthroughSubject<Void, Never>()
     private var reloadData = PassthroughSubject<Void, Never>()
     private var loadMoreData = PassthroughSubject<Void, Never>()
-    private var searchData = PassthroughSubject<String, Never>()
     
     private var listPhoto: [Photo] = []
+    private var isLoadingMore: Bool = false
     
     // UI
-    private lazy var searchTextField: UITextField = {
-        let tf = UITextField()
+    private lazy var searchTextField: CustomTextField = {
+        let tf = CustomTextField()
         tf.placeholder = "Search by id or author"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +61,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        bindSearch()
+        hideKeyboardWhenTappedAround()
     }
     // MARK: - Setup UI
     private func setupUI() {
@@ -85,16 +85,23 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
             tableView.topAnchor.constraint(equalTo: navView.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
     func setupBindings() {
         let input = ListPhotoViewModel.Input(
             loadData: loadData.eraseToAnyPublisher(),
-            loadMoreData: loadMoreData.eraseToAnyPublisher(),
+            loadMoreData: loadMoreData
+                .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+                .eraseToAnyPublisher(),
             reloadData: reloadData.eraseToAnyPublisher(),
-            searchData: searchData.eraseToAnyPublisher()
+            searchData: searchTextField.textPublisher
+                .dropFirst()
+                .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+                .removeDuplicates()
+                .eraseToAnyPublisher()
+            
         )
         
         let output = viewModel.transform(input, cancellables: &cancellables)
@@ -103,18 +110,15 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         output.$photos
             .dropFirst()
             .sinkOnMain({ [weak self] data in
-                print("Load data success at \(Date())")
                 guard let self = self else { return }
                 
                 let oldCount = self.listPhoto.count
                 let newCount = data.count
                 
                 if oldCount == 0 || newCount <= oldCount { // load or reload
-                    print("Load/Reload data success at \(Date())")
                     self.listPhoto = data
                     self.tableView.reloadData()
                 } else { // loadmore
-                    print("Load more data success at \(Date())")
                     let startIndex = oldCount
                     let endIndex = newCount - 1
                     
@@ -133,6 +137,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         output.$isLoading
             .subject
             .sinkOnMain({ [weak self] value in
+                self?.isLoadingMore = value
                 if value {
                     self?.showLoading()
                 } else {
@@ -167,17 +172,6 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
             .filter { $0 != nil }
             .sinkOnMain { [weak self] error in
                 self?.showError(message: error?.localizedDescription ?? "")
-            }
-            .store(in: &cancellables)
-    }
-    
-    // MARK: - Bindings
-    private func bindSearch() {
-        NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: searchTextField)
-            .compactMap { ($0.object as? UITextField)?.text }
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .sink { [weak self] text in
-                self?.searchData.send(text)
             }
             .store(in: &cancellables)
     }
@@ -224,7 +218,8 @@ extension ListPhotoViewController: UITableViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard searchTextField.text?.isEmpty ?? true else { return } // not load if searching
+        guard !isLoadingMore,
+              searchTextField.text?.isEmpty ?? true else { return } // not load if searching
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         if offsetY > contentHeight - scrollView.frame.size.height - 150 {
@@ -276,7 +271,3 @@ extension ListPhotoViewController: UITableViewDelegate {
 //        }
 //    }
 //}
-
-extension ListPhotoViewController: StoryboardScreen {
-    static var storyboard: UIStoryboard = Storyboards.photo
-}

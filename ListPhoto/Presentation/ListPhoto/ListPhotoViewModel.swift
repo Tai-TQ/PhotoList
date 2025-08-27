@@ -62,6 +62,7 @@ extension ListPhotoViewModel: ViewModel {
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
+                print("Load data success at \(Date())")
                 output.$photos.send(value)
                 photos = value
             }
@@ -81,6 +82,7 @@ extension ListPhotoViewModel: ViewModel {
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
+                print("LoadMore data success at \(Date())")
                 output.$photos.send(output.photos + value)
                 photos = output.photos + value
             }
@@ -97,6 +99,7 @@ extension ListPhotoViewModel: ViewModel {
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
+                print("Reload data success at \(Date())")
                 output.$photos.send(value)
                 photos = value
             }
@@ -105,9 +108,14 @@ extension ListPhotoViewModel: ViewModel {
         input.searchData
             .subscribe(on: DispatchQueue.global())
             .map { searchText -> [Photo] in
+                print("Start Search with \(searchText) at \(Date())")
+                if searchText.isEmpty {
+                    return photos
+                }
                 let lower = searchText.lowercased()
                 return photos.filter { $0.id.lowercased().contains(lower) || $0.author.lowercased().contains(lower) }
             }
+            .handleEvents(receiveOutput: { _ in print("Search success at \(Date())") })
             .sinkOnMain(output.$photos.send)
             .store(in: &cancellables)
         
