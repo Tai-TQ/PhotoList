@@ -42,7 +42,8 @@ extension ViewModel {
                     }
                     .handleEvents(receiveCompletion: { _ in isLoading.store(false) })
             }
-            .sinkOnMain { value in
+            .receive(on: RunLoop.main)
+            .sink { value in
                 onValue(value)
             }
             .store(in: &cancellables)

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 public protocol ImageRepository {
-//    func fetchImageData(urlString: String) -> AnyPublisher<Data, Error>
     func fetchImageData(urlString: String,
                         targetSize: CGSize,
                         scale: CGFloat) -> AnyPublisher<UIImage, Error>

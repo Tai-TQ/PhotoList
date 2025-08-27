@@ -49,7 +49,8 @@ extension ListPhotoViewModel: ViewModel {
         var pageInfo = PagingInfo(page: 1, itemsPerPage: 30)
         var hasMoreData = true
         errorCombine
-            .sinkOnMain(output.$error.send)
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: output.$error.send)
             .store(in: &cancellables)
 
         bindPublisher(
@@ -129,7 +130,8 @@ extension ListPhotoViewModel: ViewModel {
                 let lower = searchText.lowercased()
                 return photos.filter { $0.id.lowercased().contains(lower) || $0.author.lowercased().contains(lower) }
             }
-            .sinkOnMain(output.$photos.send)
+            .receive(on: RunLoop.main)
+            .sink(receiveValue: output.$photos.send)
             .store(in: &cancellables)
 
         return output

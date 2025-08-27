@@ -105,7 +105,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
         output.$photos
             .dropFirst()
-            .sinkOnMain { [weak self] data in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] data in
                 guard let self = self else { return }
 
                 let oldCount = self.listPhoto.count
@@ -132,7 +133,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
         output.$isLoading
             .subject
-            .sinkOnMain { [weak self] value in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] value in
                 self?.isLoadingMore = value
                 if value {
                     self?.showLoading()
@@ -144,7 +146,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
         output.$isReloading
             .subject
-            .sinkOnMain { [weak self] value in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] value in
                 if value {
                     self?.refreshControl.beginRefreshing()
                 } else {
@@ -155,7 +158,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
         output.$isLoadingMore
             .subject
-            .sinkOnMain { [weak self] value in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] value in
                 self?.isLoadingMore = value
                 if value {
                     self?.tableView.tableFooterView = self?.loadingFooterView
@@ -167,7 +171,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
         output.$error
             .filter { $0 != nil }
-            .sinkOnMain { [weak self] error in
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
                 self?.showError(message: error?.localizedDescription ?? "")
             }
             .store(in: &cancellables)
