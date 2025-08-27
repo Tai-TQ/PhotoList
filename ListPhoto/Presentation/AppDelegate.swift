@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var backgroundUpdateTask: UIBackgroundTaskIdentifier = .init(rawValue: 0)
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("StartApp at \(Date())")
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         let vm: AppViewModel = assembler.resolve(window: window)

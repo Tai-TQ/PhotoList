@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 protocol ViewModel {
     associatedtype Input
@@ -24,20 +25,24 @@ extension ViewModel {
             onValue: @escaping (T) -> Void
         ) {
             trigger
-                .filter { _ in !isLoading.load() }
-                .handleEvents(receiveOutput: { _ in isLoading.store(true) })
+                .subscribe(on: DispatchQueue.global(qos: .userInteractive))
+                .compactMap { input -> U? in
+                    guard !isLoading.load() else {
+                        return nil 
+                    }
+                    isLoading.store(true)
+                    return input
+                }
                 .flatMap { input in
                     return action(input)
                         .retry(1)
                         .catch { error -> Empty<T, Never> in
-                            print("Receive error: \(error)")
                             errorSubject.send(error)
                             return .init()
                         }
                         .handleEvents(receiveCompletion: { _ in isLoading.store(false) })
                 }
                 .sinkOnMain { value in
-                    isLoading.store(false)
                     onValue(value)
                 }
                 .store(in: &cancellables)

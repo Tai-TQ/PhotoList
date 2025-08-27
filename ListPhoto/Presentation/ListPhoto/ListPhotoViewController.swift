@@ -20,10 +20,9 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     private var listPhoto: [Photo] = []
     private var isLoadingMore: Bool = false
     
-    // UI
     private lazy var searchTextField: CustomTextField = {
         let tf = CustomTextField()
-        tf.placeholder = "Search by id or author"
+        tf.placeholder = "Search by Id or Author"
         tf.borderStyle = .roundedRect
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
@@ -34,7 +33,6 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         tableView.register(PhotoCell.self, forCellReuseIdentifier: PhotoCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.prefetchDataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
@@ -63,6 +61,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         setupUI()
         hideKeyboardWhenTappedAround()
     }
+    
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .white
@@ -92,9 +91,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     func setupBindings() {
         let input = ListPhotoViewModel.Input(
             loadData: loadData.eraseToAnyPublisher(),
-            loadMoreData: loadMoreData
-                .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-                .eraseToAnyPublisher(),
+            loadMoreData: loadMoreData.eraseToAnyPublisher(),
             reloadData: reloadData.eraseToAnyPublisher(),
             searchData: searchTextField.textPublisher
                 .dropFirst()
@@ -105,7 +102,6 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         )
         
         let output = viewModel.transform(input, cancellables: &cancellables)
-        loadData.send()
         
         output.$photos
             .dropFirst()
@@ -115,10 +111,10 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
                 let oldCount = self.listPhoto.count
                 let newCount = data.count
                 
-                if oldCount == 0 || newCount <= oldCount { // load or reload
+                if oldCount == 0 || newCount <= oldCount {
                     self.listPhoto = data
                     self.tableView.reloadData()
-                } else { // loadmore
+                } else {
                     let startIndex = oldCount
                     let endIndex = newCount - 1
                     
@@ -160,6 +156,7 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
         output.$isLoadingMore
             .subject
             .sinkOnMain({ [weak self] value in
+                self?.isLoadingMore = value
                 if value {
                     self?.tableView.tableFooterView = self?.loadingFooterView
                 } else {
@@ -174,6 +171,8 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
                 self?.showError(message: error?.localizedDescription ?? "")
             }
             .store(in: &cancellables)
+        
+        loadData.send()
     }
     
     // MARK: - Actions
@@ -209,65 +208,17 @@ extension ListPhotoViewController: UITableViewDelegate {
         let targetSize = photo.displayedSize(for: UIScreen.main.bounds.width)
         
         photoCell.loadImage(urlString: photo.url, imageUseCase: viewModel.imageUseCase, targetSize: targetSize)
-    }
-    
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Cancel image loading for cells that are no longer visible
-        guard let photoCell = cell as? PhotoCell else { return }
-        photoCell.cancelImageLoad()
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard !isLoadingMore,
-              searchTextField.text?.isEmpty ?? true else { return } // not load if searching
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        if offsetY > contentHeight - scrollView.frame.size.height - 150 {
+        
+        if !isLoadingMore
+            && indexPath.row >= listPhoto.count - 10
+            && (searchTextField.textPublisher.value.isEmpty) {
+            isLoadingMore = true
             loadMoreData.send()
         }
     }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let photoCell = cell as? PhotoCell else { return }
+        photoCell.cancelImageLoad()
+    }
 }
-
-//extension ListPhotoViewController: UITableViewDataSourcePrefetching {
-//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-//        for indexPath in indexPaths {
-//            guard indexPath.row < filteredPhotos.count else { continue }
-//            if prefetchCancellables[indexPath] != nil { continue } // Avoid duplicates
-//            
-//            let photo = filteredPhotos[indexPath.row]
-//            let screenWidth = UIScreen.main.bounds.width
-//            let padding: CGFloat = 16
-//            let maxWidth = screenWidth - 2 * padding
-//            let aspectRatio = CGFloat(photo.height) / CGFloat(photo.width)
-//            let height = maxWidth * aspectRatio
-//            let targetSize = CGSize(width: maxWidth, height: height)
-//            let scale = UIScreen.main.scale
-//            
-//            // Prefetch image to cache
-//            let publisher = viewModel.imageUseCase.fetchImageData(
-//                urlString: photo.url,
-//                targetSize: targetSize,
-//                scale: scale
-//            )
-//            
-//            let cancellable = publisher
-//                .sink(
-//                    receiveCompletion: { [weak self] _ in
-//                        self?.prefetchCancellables.removeValue(forKey: indexPath)
-//                    },
-//                    receiveValue: { _ in
-//                        // Image is now cached, no need to do anything
-//                    }
-//                )
-//            
-//            prefetchCancellables[indexPath] = cancellable
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-//        for indexPath in indexPaths {
-//            prefetchCancellables[indexPath]?.cancel()
-//            prefetchCancellables.removeValue(forKey: indexPath)
-//        }
-//    }
-//}

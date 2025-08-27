@@ -29,23 +29,8 @@ extension APIService {
             .timeout(.seconds(30), scheduler: DispatchQueue.main)
             .map(\.data)
             .decode(type: [PhotoDTO].self, decoder: JSONDecoder())
-            .handleEvents(
-                receiveSubscription: { _ in
-                    print("🔄 Starting request...")
-                },
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        print("✅ Request completed successfully")
-                    case .failure(let error):
-                        print("❌ Request failed with error: \(error)")
-                    }
-                }
-            )
             .mapError { error in
-                if error is DecodingError {
-                    return APIServiceError.decodingError
-                } else if let urlError = error as? URLError {
+                 if let urlError = error as? URLError {
                     switch urlError.code {
                     case .timedOut:
                         return APIServiceError.timeout
@@ -56,6 +41,8 @@ extension APIService {
                     default:
                         return APIServiceError.networkError(urlError.localizedDescription)
                     }
+                } else if error is DecodingError {
+                    return APIServiceError.decodingError
                 } else {
                     return APIServiceError.unknown(error.localizedDescription)
                 }

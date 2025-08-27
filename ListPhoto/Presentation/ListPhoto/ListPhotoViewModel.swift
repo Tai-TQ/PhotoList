@@ -46,7 +46,8 @@ extension ListPhotoViewModel: ViewModel {
         let output = Output()
         var photos: [Photo] = []
         let errorCombine = PassthroughSubject<Error, Never>()
-        var pageInfo = PagingInfo(page: 1, itemsPerPage: 10)
+        var pageInfo = PagingInfo(page: 1, itemsPerPage: 30)
+        var hasMoreData = true
         errorCombine
             .sinkOnMain(output.$error.send)
             .store(in: &cancellables)
@@ -57,34 +58,46 @@ extension ListPhotoViewModel: ViewModel {
             errorSubject: errorCombine,
             cancellables: &cancellables,
             action: { _ in
-                print("Start load data at \(Date())")
                 pageInfo.page = 1
+                hasMoreData = true
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
-                print("Load data success at \(Date())")
                 output.$photos.send(value)
                 photos = value
+                if value.count < pageInfo.itemsPerPage {
+                    hasMoreData = false
+                }
             }
         )
         
         let loadMoreTrigger = input.loadMoreData
-            .filter { !output.$isLoading.load() && !output.$isReloading.load() && !photos.isEmpty }
+            .filter {
+                !photos.isEmpty
+                && !output.$isLoading.load()
+                && !output.$isReloading.load()
+                && hasMoreData
+            }
             .eraseToAnyPublisher()
+        
         bindPublisher(
             trigger: loadMoreTrigger,
             isLoading: output.$isLoadingMore,
             errorSubject: errorCombine,
             cancellables: &cancellables,
             action: { _ in
-                print("Start loadMore data at \(Date())")
+                var pageInfo = pageInfo
                 pageInfo.page += 1
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
-                print("LoadMore data success at \(Date())")
-                output.$photos.send(output.photos + value)
-                photos = output.photos + value
+                pageInfo.page += 1
+                let newPhotos = output.photos + value
+                output.$photos.send(newPhotos)
+                photos = newPhotos
+                if value.count < pageInfo.itemsPerPage {
+                    hasMoreData = false
+                }
             }
         )
         
@@ -94,28 +107,28 @@ extension ListPhotoViewModel: ViewModel {
             errorSubject: errorCombine,
             cancellables: &cancellables,
             action: { _ in
-                print("Start reload data at \(Date())")
                 pageInfo.page = 1
+                hasMoreData = true
                 return useCase.getPhotos(pageInfo: pageInfo)
             },
             onValue: { value in
-                print("Reload data success at \(Date())")
                 output.$photos.send(value)
                 photos = value
+                if value.count < pageInfo.itemsPerPage {
+                    hasMoreData = false
+                }
             }
         )
         
         input.searchData
             .subscribe(on: DispatchQueue.global())
             .map { searchText -> [Photo] in
-                print("Start Search with \(searchText) at \(Date())")
                 if searchText.isEmpty {
                     return photos
                 }
                 let lower = searchText.lowercased()
                 return photos.filter { $0.id.lowercased().contains(lower) || $0.author.lowercased().contains(lower) }
             }
-            .handleEvents(receiveOutput: { _ in print("Search success at \(Date())") })
             .sinkOnMain(output.$photos.send)
             .store(in: &cancellables)
         
