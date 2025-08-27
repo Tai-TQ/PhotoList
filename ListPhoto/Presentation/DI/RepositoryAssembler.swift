@@ -5,9 +5,9 @@
 //  Created by TaiTruong on 26/8/25.
 //
 
-import Domain
-import Data
 import Combine
+import Data
+import Domain
 
 protocol RepositoryAssembler: ServiceAssembler {
     func resolvePhotoRepository() -> PhotoRepository
@@ -19,7 +19,7 @@ extension RepositoryAssembler where Self: DefaultAssembler {
         let apiService = resolveAPIService()
         return PhotoRepositoryImpl(apiService: apiService)
     }
-    
+
     func resolveImageRepository() -> ImageRepository {
         let apiService = resolveAPIService()
         return ImageRepositoryImpl(apiService: apiService)

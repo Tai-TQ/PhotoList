@@ -5,34 +5,33 @@
 //  Created by TaiTruong on 25/8/25.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 @propertyWrapper
 struct Property<Value> {
-   
     var subject: CurrentValueSubject<Value, Never>
     private var lock = NSLock()
-    
+
     public var wrappedValue: Value {
         get { return load() }
         set { store(newValue) }
     }
-    
+
     public var projectedValue: CurrentValueSubject<Value, Never> {
-        return self.subject
+        return subject
     }
-    
+
     public init(wrappedValue: Value) {
         subject = CurrentValueSubject(wrappedValue)
     }
-    
+
     func load() -> Value {
         lock.lock()
         defer { lock.unlock() }
         return subject.value
     }
-    
+
     func store(_ newValue: Value) {
         lock.lock()
         defer { lock.unlock() }
@@ -40,32 +39,30 @@ struct Property<Value> {
     }
 }
 
-
 @propertyWrapper
 struct LoadingProperty<Value> {
-   
     var subject: CurrentValueSubject<Value, Never>
     private var lock = NSLock()
-    
+
     public var wrappedValue: Value {
         get { return load() }
         set { store(newValue) }
     }
-    
+
     public var projectedValue: LoadingProperty<Value> {
         return self
     }
-    
+
     public init(wrappedValue: Value) {
         subject = CurrentValueSubject(wrappedValue)
     }
-    
+
     func load() -> Value {
         lock.lock()
         defer { lock.unlock() }
         return subject.value
     }
-    
+
     func store(_ newValue: Value) {
         lock.lock()
         defer { lock.unlock() }

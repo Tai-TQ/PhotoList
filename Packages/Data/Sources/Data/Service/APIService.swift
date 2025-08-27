@@ -5,8 +5,8 @@
 //  Created by TaiTruong on 26/8/25.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 public enum APIServiceError: Error {
     case invalidURL
@@ -31,9 +31,9 @@ extension APIServiceError: LocalizedError {
             return "Server is unavailable"
         case .decodingError:
             return "Failed to decode response"
-        case .networkError(let message):
+        case let .networkError(message):
             return "Network error: \(message)"
-        case .unknown(let message):
+        case let .unknown(message):
             return "Unknown error: \(message)"
         }
     }

@@ -15,7 +15,5 @@ struct ListPhotoNavigator: ListPhotoNavigatorType {
     unowned let assembler: Assembler
     unowned let navigation: UINavigationController
 
-    func toPhotoDetail() {
-        
-    }
+    func toPhotoDetail() {}
 }

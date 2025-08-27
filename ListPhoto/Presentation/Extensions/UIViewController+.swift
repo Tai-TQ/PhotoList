@@ -7,17 +7,17 @@
 
 import UIKit
 
-private var loadingViewTag = 999999
+private var loadingViewTag = 999_999
 
 extension UIViewController {
     func showLoading() {
         LoadingManager.shared.show()
     }
-    
+
     func hideLoading() {
         LoadingManager.shared.hide()
     }
-    
+
     func showError(title: String = "Error", message: String, completion: (() -> Void)? = nil) {
         LoadingManager.shared.hideIfShowing()
         let ac = UIAlertController(title: title,
@@ -45,7 +45,7 @@ extension UIViewController {
         ac.addAction(okAction)
         present(ac, animated: true, completion: nil)
     }
-    
+
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false

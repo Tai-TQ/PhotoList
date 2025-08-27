@@ -5,21 +5,21 @@
 //  Created by TaiTruong on 25/8/25.
 //
 
-import Foundation
 import Combine
 import Domain
+import Foundation
 
 struct ListPhotoViewModel {
     let navigator: ListPhotoNavigatorType
     let useCase: ListPhotoUseCaseType
-    
+
     var imageUseCase: ImageUseCase {
         guard let uc = useCase as? ImageUseCase else {
             fatalError("useCase must conform to ImageUseCase")
         }
         return uc
     }
-    
+
     init(navigator: ListPhotoNavigatorType, useCase: ListPhotoUseCaseType) {
         self.navigator = navigator
         self.useCase = useCase
@@ -33,7 +33,7 @@ extension ListPhotoViewModel: ViewModel {
         var reloadData: AnyPublisher<Void, Never>
         var searchData: AnyPublisher<String, Never>
     }
-    
+
     struct Output {
         @Property var photos: [Photo] = []
         @Property var error: Error?
@@ -41,7 +41,7 @@ extension ListPhotoViewModel: ViewModel {
         @LoadingProperty var isLoadingMore: Bool = false
         @LoadingProperty var isReloading: Bool = false
     }
-    
+
     func transform(_ input: Input, cancellables: inout Set<AnyCancellable>) -> Output {
         let output = Output()
         var photos: [Photo] = []
@@ -70,16 +70,16 @@ extension ListPhotoViewModel: ViewModel {
                 }
             }
         )
-        
+
         let loadMoreTrigger = input.loadMoreData
             .filter {
                 !photos.isEmpty
-                && !output.$isLoading.load()
-                && !output.$isReloading.load()
-                && hasMoreData
+                    && !output.$isLoading.load()
+                    && !output.$isReloading.load()
+                    && hasMoreData
             }
             .eraseToAnyPublisher()
-        
+
         bindPublisher(
             trigger: loadMoreTrigger,
             isLoading: output.$isLoadingMore,
@@ -100,7 +100,7 @@ extension ListPhotoViewModel: ViewModel {
                 }
             }
         )
-        
+
         bindPublisher(
             trigger: input.reloadData,
             isLoading: output.$isReloading,
@@ -119,7 +119,7 @@ extension ListPhotoViewModel: ViewModel {
                 }
             }
         )
-        
+
         input.searchData
             .subscribe(on: DispatchQueue.global())
             .map { searchText -> [Photo] in
@@ -131,7 +131,7 @@ extension ListPhotoViewModel: ViewModel {
             }
             .sinkOnMain(output.$photos.send)
             .store(in: &cancellables)
-        
+
         return output
     }
 }

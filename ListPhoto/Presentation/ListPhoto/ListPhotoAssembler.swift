@@ -5,8 +5,8 @@
 //  Created by TaiTruong on 25/8/25.
 //
 
-import UIKit
 import Data
+import UIKit
 
 protocol ListPhotoAssembler {
     func resolve(navigation: UINavigationController) -> ListPhotoViewController

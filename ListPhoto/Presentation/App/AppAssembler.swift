@@ -28,4 +28,3 @@ extension AppAssembler where Self: DefaultAssembler {
         AppUseCase()
     }
 }
-

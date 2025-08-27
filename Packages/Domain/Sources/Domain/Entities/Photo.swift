@@ -21,7 +21,7 @@ public struct Photo: Equatable {
         self.height = height
         self.url = url
     }
-    
+
     public func displayedSize(for displayWidth: CGFloat) -> CGSize {
         guard width > 0, height > 0 else { return .zero }
         let ratio = CGFloat(height) / CGFloat(width)
@@ -29,8 +29,8 @@ public struct Photo: Equatable {
     }
 }
 
-extension Photo {
-    public static func mock() -> Photo {
+public extension Photo {
+    static func mock() -> Photo {
         return Photo(
             id: "102",
             author: "Ben Moore",

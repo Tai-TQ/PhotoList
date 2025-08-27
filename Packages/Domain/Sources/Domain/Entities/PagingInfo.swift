@@ -10,9 +10,10 @@ import Foundation
 public struct PagingInfo {
     public var page: Int
     public var itemsPerPage: Int
-    
+
     public init(page: Int = 1,
-                itemsPerPage: Int = 0) {
+                itemsPerPage: Int = 0)
+    {
         self.page = page
         self.itemsPerPage = itemsPerPage
     }

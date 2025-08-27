@@ -9,17 +9,16 @@ import UIKit
 
 public protocol ViewModelBindable: AnyObject {
     associatedtype ViewModel
-    
+
     var viewModel: ViewModel! { get set }
-    
+
     func setupBindings()
 }
 
-extension ViewModelBindable where Self: UIViewController {
-    public func attachViewModel(to model: Self.ViewModel) {
+public extension ViewModelBindable where Self: UIViewController {
+    func attachViewModel(to model: Self.ViewModel) {
         viewModel = model
         loadViewIfNeeded()
         setupBindings()
     }
 }
-

@@ -5,9 +5,9 @@
 //  Created by TaiTruong on 26/8/25.
 //
 
-import Foundation
 import Combine
 import Domain
+import Foundation
 
 extension APIService {
     func getPhotosDTO(page: Int, perPage: Int) -> AnyPublisher<[PhotoDTO], Error> {
@@ -16,21 +16,21 @@ extension APIService {
         }
         components.queryItems = [
             URLQueryItem(name: "page", value: "\(page)"),
-            URLQueryItem(name: "limit", value: "\(perPage)")
+            URLQueryItem(name: "limit", value: "\(perPage)"),
         ]
-        
+
         guard let url = components.url else {
             return Fail(error: APIServiceError.invalidURL).eraseToAnyPublisher()
         }
-        
+
         var request = URLRequest(url: url, timeoutInterval: 30)
-        
+
         return URLSession.shared.dataTaskPublisher(for: request)
             .timeout(.seconds(30), scheduler: DispatchQueue.main)
             .map(\.data)
             .decode(type: [PhotoDTO].self, decoder: JSONDecoder())
             .mapError { error in
-                 if let urlError = error as? URLError {
+                if let urlError = error as? URLError {
                     switch urlError.code {
                     case .timedOut:
                         return APIServiceError.timeout

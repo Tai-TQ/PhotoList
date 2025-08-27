@@ -42,7 +42,7 @@ final class LoadingManager {
         overlayWindow?.isHidden = true
         overlayWindow = nil
     }
-    
+
     func hideIfShowing() {
         if overlayWindow != nil {
             hide()

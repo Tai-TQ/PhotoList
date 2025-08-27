@@ -8,9 +8,9 @@
 import UIKit
 
 protocol Assembler: AnyObject,
-                    ServiceAssembler,
-                    RepositoryAssembler,
-                    AppAssembler,
-                    ListPhotoAssembler {}
+    ServiceAssembler,
+    RepositoryAssembler,
+    AppAssembler,
+    ListPhotoAssembler {}
 
 final class DefaultAssembler: Assembler {}

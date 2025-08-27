@@ -13,7 +13,7 @@ extension UIImage {
         return renderer.image { context in
             backgroundColor.setFill()
             context.fill(CGRect(origin: .zero, size: size))
-            
+
             // Add loading indicator style
             let iconSize: CGFloat = min(size.width, size.height) * 0.3
             let iconRect = CGRect(
@@ -22,7 +22,7 @@ extension UIImage {
                 width: iconSize,
                 height: iconSize
             )
-            
+
             UIColor.systemGray3.setFill()
             context.cgContext.fillEllipse(in: iconRect)
         }

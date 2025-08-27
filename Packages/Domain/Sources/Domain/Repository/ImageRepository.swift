@@ -5,13 +5,13 @@
 //  Created by TaiTruong on 26/8/25.
 //
 
-import Foundation
 import Combine
+import Foundation
 import UIKit
 
 public protocol ImageRepository {
 //    func fetchImageData(urlString: String) -> AnyPublisher<Data, Error>
     func fetchImageData(urlString: String,
-                   targetSize: CGSize,
-                   scale: CGFloat) -> AnyPublisher<UIImage, Error>
+                        targetSize: CGSize,
+                        scale: CGFloat) -> AnyPublisher<UIImage, Error>
 }

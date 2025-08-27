@@ -11,40 +11,40 @@ import Foundation
 protocol ViewModel {
     associatedtype Input
     associatedtype Output
-    
+
     func transform(_ input: Input, cancellables: inout Set<AnyCancellable>) -> Output
 }
 
 extension ViewModel {
     func bindPublisher<T, U>(
-            trigger: AnyPublisher<U, Never>,
-            isLoading: LoadingProperty<Bool>,
-            errorSubject: PassthroughSubject<Error, Never>,
-            cancellables: inout Set<AnyCancellable>,
-            action: @escaping (U) -> AnyPublisher<T, Error>,
-            onValue: @escaping (T) -> Void
-        ) {
-            trigger
-                .subscribe(on: DispatchQueue.global(qos: .userInteractive))
-                .compactMap { input -> U? in
-                    guard !isLoading.load() else {
-                        return nil 
+        trigger: AnyPublisher<U, Never>,
+        isLoading: LoadingProperty<Bool>,
+        errorSubject: PassthroughSubject<Error, Never>,
+        cancellables: inout Set<AnyCancellable>,
+        action: @escaping (U) -> AnyPublisher<T, Error>,
+        onValue: @escaping (T) -> Void
+    ) {
+        trigger
+            .subscribe(on: DispatchQueue.global(qos: .userInteractive))
+            .compactMap { input -> U? in
+                guard !isLoading.load() else {
+                    return nil
+                }
+                isLoading.store(true)
+                return input
+            }
+            .flatMap { input in
+                action(input)
+                    .retry(1)
+                    .catch { error -> Empty<T, Never> in
+                        errorSubject.send(error)
+                        return .init()
                     }
-                    isLoading.store(true)
-                    return input
-                }
-                .flatMap { input in
-                    return action(input)
-                        .retry(1)
-                        .catch { error -> Empty<T, Never> in
-                            errorSubject.send(error)
-                            return .init()
-                        }
-                        .handleEvents(receiveCompletion: { _ in isLoading.store(false) })
-                }
-                .sinkOnMain { value in
-                    onValue(value)
-                }
-                .store(in: &cancellables)
-        }
+                    .handleEvents(receiveCompletion: { _ in isLoading.store(false) })
+            }
+            .sinkOnMain { value in
+                onValue(value)
+            }
+            .store(in: &cancellables)
+    }
 }
