@@ -23,9 +23,43 @@ extension APIService {
             return Fail(error: APIServiceError.invalidURL).eraseToAnyPublisher()
         }
         
-        return URLSession.shared.dataTaskPublisher(for: url)
+        var request = URLRequest(url: url, timeoutInterval: 30)
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .timeout(.seconds(30), scheduler: DispatchQueue.main)
             .map(\.data)
             .decode(type: [PhotoDTO].self, decoder: JSONDecoder())
+            .handleEvents(
+                receiveSubscription: { _ in
+                    print("🔄 Starting request...")
+                },
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        print("✅ Request completed successfully")
+                    case .failure(let error):
+                        print("❌ Request failed with error: \(error)")
+                    }
+                }
+            )
+            .mapError { error in
+                if error is DecodingError {
+                    return APIServiceError.decodingError
+                } else if let urlError = error as? URLError {
+                    switch urlError.code {
+                    case .timedOut:
+                        return APIServiceError.timeout
+                    case .notConnectedToInternet, .networkConnectionLost:
+                        return APIServiceError.noInternetConnection
+                    case .cannotFindHost, .cannotConnectToHost:
+                        return APIServiceError.serverUnavailable
+                    default:
+                        return APIServiceError.networkError(urlError.localizedDescription)
+                    }
+                } else {
+                    return APIServiceError.unknown(error.localizedDescription)
+                }
+            }
             .eraseToAnyPublisher()
     }
 }

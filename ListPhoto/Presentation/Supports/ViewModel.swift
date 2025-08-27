@@ -28,8 +28,9 @@ extension ViewModel {
                 .handleEvents(receiveOutput: { _ in isLoading.store(true) })
                 .flatMap { input in
                     return action(input)
-                        .retry(3)
+                        .retry(1)
                         .catch { error -> Empty<T, Never> in
+                            print("Receive error: \(error)")
                             errorSubject.send(error)
                             return .init()
                         }

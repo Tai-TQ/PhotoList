@@ -17,7 +17,7 @@ protocol ListPhotoAssembler {
 
 extension ListPhotoAssembler {
     func resolve(navigation: UINavigationController) -> ListPhotoViewController {
-        let vc = ListPhotoViewController.instantiate()
+        let vc = ListPhotoViewController()
         let vm: ListPhotoViewModel = resolve(navigation: navigation)
         vc.attachViewModel(to: vm)
         return vc

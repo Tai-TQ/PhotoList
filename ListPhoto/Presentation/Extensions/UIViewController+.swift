@@ -20,13 +20,40 @@ extension UIViewController {
     
     func showError(title: String = "Error", message: String, completion: (() -> Void)? = nil) {
         LoadingManager.shared.hideIfShowing()
-        
-        let alert = UIAlertController(title: title,
-                                      message: message,
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        let ac = UIAlertController(title: title,
+                                   message: title.isEmpty ? "\(message)" : "\n\(message)",
+                                   preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
             completion?()
-        }))
-        present(alert, animated: true)
+        }
+        if !title.isEmpty {
+            let titleAtt = NSAttributedString(
+                string: title,
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.redE26161,
+                             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .bold)]
+            )
+            ac.setValue(titleAtt, forKey: "attributedTitle")
+        }
+
+        let messageAtt = NSAttributedString(
+            string: title.isEmpty ? "\(message)" : "\n\(message)",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black22,
+                         NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]
+        )
+
+        ac.setValue(messageAtt, forKey: "attributedMessage")
+        ac.addAction(okAction)
+        present(ac, animated: true, completion: nil)
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

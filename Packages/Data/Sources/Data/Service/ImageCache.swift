@@ -62,7 +62,6 @@ class ImageCache {
 
     public func getCachedImage(for url: URL, targetSize: CGSize, completion: @escaping (UIImage?) -> Void) {
         let key = cacheKey(for: url, targetSize: targetSize)
-        print("getCachedImage for \(url)")
         // Disk read - serialized
         diskQueue.async { [weak self] in
             guard let self = self else {
