@@ -43,6 +43,8 @@ extension UIViewController {
 
         ac.setValue(messageAtt, forKey: "attributedMessage")
         ac.addAction(okAction)
-        present(ac, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(ac, animated: true, completion: nil)
+        }
     }
 }
