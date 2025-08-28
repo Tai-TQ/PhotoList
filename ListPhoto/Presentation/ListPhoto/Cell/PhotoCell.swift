@@ -18,16 +18,16 @@ class PhotoCell: UITableViewCell {
         return iv
     }()
 
-    private lazy var idLabel: UILabel = {
+    private lazy var authorLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var authorLabel: UILabel = {
+    private lazy var sizeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.textColor = .darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -47,35 +47,35 @@ class PhotoCell: UITableViewCell {
         super.prepareForReuse()
         photoImageView.image = nil
         // Clear text
-        idLabel.text = nil
         authorLabel.text = nil
+        sizeLabel.text = nil
     }
 
     private func setupUI() {
         contentView.addSubview(photoImageView)
-        contentView.addSubview(idLabel)
         contentView.addSubview(authorLabel)
+        contentView.addSubview(sizeLabel)
 
         let padding: CGFloat = 16
-        let spacing: CGFloat = 4
+        let spacing: CGFloat = 2
 
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: spacing),
             photoImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             photoImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
 
-            idLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: spacing),
-            idLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            idLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-
-            authorLabel.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: spacing),
+            authorLabel.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: spacing),
             authorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
             authorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            authorLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
+
+            sizeLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: spacing),
+            sizeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            sizeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            sizeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -padding),
         ])
 
         imageHeightConstraint = photoImageView.heightAnchor.constraint(equalToConstant: 200)
-        imageHeightConstraint?.priority = UILayoutPriority(rawValue: 999)
+        imageHeightConstraint?.priority = UILayoutPriority(rawValue: 999) // for disable log warning
         imageHeightConstraint?.isActive = true
         selectionStyle = .none
     }
@@ -84,8 +84,8 @@ class PhotoCell: UITableViewCell {
         let targetSize = photo.displayedSize(for: UIScreen.main.bounds.width)
         imageHeightConstraint?.constant = targetSize.height
 
-        idLabel.text = "ID: \(photo.id)"
-        authorLabel.text = "Author: \(photo.author)"
+        authorLabel.text = photo.author
+        sizeLabel.text = "Size: \(Int(targetSize.width)) x \(Int(targetSize.height.rounded()))"
     }
 
     func loadImage(urlString: String, imageUseCase: ListPhotoUseCaseType, targetSize: CGSize) {

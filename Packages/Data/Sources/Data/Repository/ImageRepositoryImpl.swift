@@ -29,7 +29,6 @@ public final class ImageRepositoryImpl: ImageRepository {
                 .eraseToAnyPublisher()
         }
 
-        // 1. Check cache first
         return Future<UIImage, Error> { [weak self] promise in
             guard let self = self else {
                 promise(.failure(URLError(.unknown)))
@@ -71,10 +70,7 @@ public final class ImageRepositoryImpl: ImageRepository {
                         return
                     }
 
-                    // Save to cache (async - không block)
                     self.imageCache.saveImage(image, for: url, targetSize: targetSize, scale: scale)
-
-                    // Return image immediately (không cần đợi cache save)
                     promise(.success(image))
                 }
             )

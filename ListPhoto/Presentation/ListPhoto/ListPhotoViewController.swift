@@ -44,6 +44,14 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
 
     private let refreshControl = UIRefreshControl()
 
+    #if DEBUG
+    private lazy var fpsLabel: FPSLabel = {
+        let label = FPSLabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    #endif
+
     private lazy var loadingFooterView: UIView = {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 60))
         let activityIndicator = UIActivityIndicatorView(style: .medium)
@@ -60,13 +68,13 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        hideKeyboardWhenTappedAround()
     }
 
     // MARK: - Setup UI
 
     private func setupUI() {
         view.backgroundColor = .white
+        title = "Photo List"
         let navView = UIView()
         navView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(navView)
@@ -78,19 +86,26 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
             navView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             navView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navView.heightAnchor.constraint(equalToConstant: 60),
+            navView.heightAnchor.constraint(equalToConstant: 44),
             searchTextField.leadingAnchor.constraint(equalTo: navView.leadingAnchor, constant: 16),
             searchTextField.trailingAnchor.constraint(equalTo: navView.trailingAnchor, constant: -16),
             searchTextField.centerYAnchor.constraint(equalTo: navView.centerYAnchor),
             searchTextField.heightAnchor.constraint(equalToConstant: 36),
-            tableView.topAnchor.constraint(equalTo: navView.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: navView.bottomAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-
-//        let fpsLabel = FPSLabel(frame: CGRect(x: 20, y: 50, width: 80, height: 30))
-//        view.addSubview(fpsLabel)
+        #if DEBUG
+        view.addSubview(fpsLabel)
+        NSLayoutConstraint.activate([
+            fpsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            fpsLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            fpsLabel.widthAnchor.constraint(equalToConstant: 80),
+            fpsLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        #endif
+        hideKeyboardWhenTappedAround()
     }
 
     func setupBindings() {
@@ -199,6 +214,17 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
     @objc
     private func didPullToRefresh() {
         reloadData.send()
+    }
+    
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(tap)
+    }
+
+    @objc
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

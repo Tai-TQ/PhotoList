@@ -31,7 +31,6 @@ class SplashViewController: UIViewController, ViewModelBindable {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        hideKeyboardWhenTappedAround()
     }
 
     override func viewDidAppear(_ animated: Bool) {
