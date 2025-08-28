@@ -66,14 +66,17 @@ class CustomTextField: UITextField {
     }
 
     private func setupValidationCondition() {
-        var characterSet = CharacterSet()
-        characterSet.formUnion(.lowercaseLetters)
-        characterSet.formUnion(.uppercaseLetters)
-        characterSet.formUnion(.decimalDigits)
-        characterSet.formUnion(.whitespaces)
-        characterSet.insert(charactersIn: "!@#$%^&*():.\"")
-
-        self.characterSet = characterSet.inverted
+        var allow = CharacterSet()
+        let uppercase = CharacterSet(charactersIn: Unicode.Scalar(0x41)!...Unicode.Scalar(0x5A)!) // A-Z
+        let lowercase = CharacterSet(charactersIn: Unicode.Scalar(0x61)!...Unicode.Scalar(0x7A)!) // a-z
+        let digits    = CharacterSet(charactersIn: Unicode.Scalar(0x30)!...Unicode.Scalar(0x39)!) // 0-9
+        allow.formUnion(uppercase)
+        allow.formUnion(lowercase)
+        allow.formUnion(digits)
+        allow.formUnion(.whitespaces)
+        allow.insert(charactersIn: "!@#$%^&*():.\"")
+                
+        self.characterSet = allow.inverted
     }
 
     private func filterText(_ text: String) -> String {
@@ -116,6 +119,16 @@ extension CustomTextField: UITextFieldDelegate {
         let filterString = filterText(string)
         if filterString == string {
             newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            if newText.count > maxLength {
+                return false
+            }
+            return true
+        }
+        if string.count > 1 { // swipe typing
+            // Handle case swipe typing on VIETNAMESE KEYBOARD
+            // Example swipe: n → o → n → g -> the resulting string would be “nóng”.
+            // But since the character “ó” is not allowed, I will remove it -> the UI will display “nng”.
+            newText = filterText((currentText as NSString).replacingCharacters(in: range, with: string))
             if newText.count > maxLength {
                 return false
             }
