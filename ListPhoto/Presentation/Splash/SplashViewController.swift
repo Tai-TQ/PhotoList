@@ -7,8 +7,8 @@
 
 import Combine
 import Domain
-import UIKit
 import os.signpost
+import UIKit
 
 class SplashViewController: UIViewController, ViewModelBindable {
     var viewModel: SplashViewModel!
@@ -17,6 +17,7 @@ class SplashViewController: UIViewController, ViewModelBindable {
     private var loadData = PassthroughSubject<Void, Never>()
 
     // MARK: - UI
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Photo List"
@@ -32,13 +33,12 @@ class SplashViewController: UIViewController, ViewModelBindable {
         setupUI()
         hideKeyboardWhenTappedAround()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        os_signpost(.end, log: launchLog, name: "AppLaunchToFirstFrame")
         loadData.send(())
     }
-    
+
     deinit {
         debugPrint("SplashViewController deinit")
     }
@@ -51,7 +51,7 @@ class SplashViewController: UIViewController, ViewModelBindable {
 
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
 

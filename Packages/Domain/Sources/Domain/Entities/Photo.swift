@@ -30,7 +30,7 @@ public struct Photo: Equatable {
 }
 
 public extension Photo {
-    static func mock(id: String = "1", author: String = "TQT" ) -> Photo {
+    static func mock(id: String = "1", author: String = "TQT") -> Photo {
         return Photo(
             id: id,
             author: author,

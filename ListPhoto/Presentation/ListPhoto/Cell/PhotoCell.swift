@@ -43,6 +43,14 @@ class PhotoCell: UITableViewCell {
     @available(*, unavailable)
     required init?(coder _: NSCoder) { fatalError() }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.image = nil
+        // Clear text
+        idLabel.text = nil
+        authorLabel.text = nil
+    }
+
     private func setupUI() {
         contentView.addSubview(photoImageView)
         contentView.addSubview(idLabel)

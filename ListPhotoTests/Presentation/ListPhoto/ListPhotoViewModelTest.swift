@@ -5,10 +5,10 @@
 //  Created by TaiTruong on 27/8/25.
 //
 
-import XCTest
 import Combine
-@testable import ListPhoto
 import Domain
+@testable import ListPhoto
+import XCTest
 
 class ListPhotoViewModelTest: XCTestCase {
     var viewModel: ListPhotoViewModel!
@@ -23,7 +23,7 @@ class ListPhotoViewModelTest: XCTestCase {
         viewModel = ListPhotoViewModel(navigator: navigator, useCase: useCase)
         cancellables = Set<AnyCancellable>()
     }
-    
+
     override func tearDown() {
         cancellables.forEach { $0.cancel() }
         cancellables = nil
@@ -45,7 +45,7 @@ class ListPhotoViewModelTest: XCTestCase {
         )
         let output = viewModel.transform(input, cancellables: &cancellables)
         var photos: [Photo]?
-        
+
         output.$photos
             .dropFirst()
             .sink { receivedPhotos in
@@ -78,7 +78,7 @@ class ListPhotoViewModelTest: XCTestCase {
         )
         let output = viewModel.transform(input, cancellables: &cancellables)
         var error: Error?
-        
+
         output.$error
             .compactMap { $0 }
             .sink { receivedError in
@@ -96,7 +96,7 @@ class ListPhotoViewModelTest: XCTestCase {
         XCTAssertTrue(useCase.getPhotosCalled)
         XCTAssertNotNil(error)
     }
-    
+
     func test_transform_reloadData_success() {
         let expectation = XCTestExpectation(description: "Reload data success")
         let reloadData = PassthroughSubject<Void, Never>()
@@ -109,7 +109,7 @@ class ListPhotoViewModelTest: XCTestCase {
         )
         let output = viewModel.transform(input, cancellables: &cancellables)
         var photos: [Photo]?
-        
+
         output.$photos
             .dropFirst()
             .sink { receivedPhotos in
@@ -142,7 +142,7 @@ class ListPhotoViewModelTest: XCTestCase {
         )
         let output = viewModel.transform(input, cancellables: &cancellables)
         var error: Error?
-        
+
         output.$error
             .compactMap { $0 }
             .sink { receivedError in
@@ -176,7 +176,7 @@ class ListPhotoViewModelTest: XCTestCase {
         let output = viewModel.transform(input, cancellables: &cancellables)
         var photos: [Photo]?
         var photoUpdateCount = 0
-        
+
         output.$photos
             .dropFirst()
             .sink { receivedPhotos in
@@ -194,26 +194,26 @@ class ListPhotoViewModelTest: XCTestCase {
         // When
         let initialPhotos = Array(repeating: Photo.mock(), count: 100)
         useCase.getPhotosResponse = initialPhotos
-        
+
         loadData.send(())
         wait(for: [expectationInitial], timeout: 1.0)
         XCTAssertTrue(useCase.getPhotosCalled)
         XCTAssertEqual(photos?.count, 100)
         XCTAssertEqual(photos?.last?.id, "1")
-        
+
         useCase.getPhotosCalled = false
-        
+
         let morePhotos = [Photo.mock(id: "2")]
         useCase.getPhotosResponse = morePhotos
         loadMoreData.send(())
-        
+
         // Then
         wait(for: [expectationLoadMore], timeout: 1.0)
         XCTAssertTrue(useCase.getPhotosCalled)
         XCTAssertEqual(photos?.count, 101)
         XCTAssertEqual(photos?.last?.id, "2")
     }
-    
+
     func test_transform_loadMoreData_failure() {
         let expectationInitial = XCTestExpectation(description: "Initial load success")
         let expectationLoadMore = XCTestExpectation(description: "Load more failure")
@@ -230,7 +230,7 @@ class ListPhotoViewModelTest: XCTestCase {
         var photos: [Photo]?
         var photoUpdateCount = 0
         var error: Error?
-        
+
         output.$photos
             .dropFirst()
             .sink { receivedPhotos in
@@ -242,7 +242,7 @@ class ListPhotoViewModelTest: XCTestCase {
                 }
             }
             .store(in: &cancellables)
-        
+
         output.$error
             .compactMap { $0 }
             .sink { receivedError in
@@ -255,18 +255,18 @@ class ListPhotoViewModelTest: XCTestCase {
         let initialPhotos = Array(repeating: Photo.mock(), count: 100)
         useCase.getPhotosResponse = initialPhotos
         loadData.send(())
-        
+
         // Then
         wait(for: [expectationInitial], timeout: 1.0)
         XCTAssertTrue(useCase.getPhotosCalled)
         XCTAssertEqual(photos?.count, 100)
         XCTAssertEqual(photos?.first?.id, "1")
-        
+
         // When
         useCase.getPhotosCalled = false
         useCase.getPhotosError = TestError.test
         loadMoreData.send(())
-        
+
         // Then
         wait(for: [expectationLoadMore], timeout: 1.0)
         XCTAssertTrue(useCase.getPhotosCalled)
@@ -300,15 +300,15 @@ class ListPhotoViewModelTest: XCTestCase {
         XCTAssertTrue(navigator.toPhotoDetailCalled)
         XCTAssertEqual(navigator.toPhotoDetailPhotoId, "1")
     }
-    
+
     func test_transform_searchData_success() {
         let expectationInitialLoad = XCTestExpectation(description: "Initial data loaded")
         let expectationSearch1 = XCTestExpectation(description: "Search for Tai")
-        let expectationSearch2 = XCTestExpectation(description: "Search for Truong")  
+        let expectationSearch2 = XCTestExpectation(description: "Search for Truong")
         let expectationSearch3 = XCTestExpectation(description: "Search for 1")
         let expectationSearch4 = XCTestExpectation(description: "Search for 2")
         let expectationSearchEmpty = XCTestExpectation(description: "Empty search")
-        
+
         let loadData = PassthroughSubject<Void, Never>()
         let searchData = PassthroughSubject<String, Never>()
         let input = ListPhotoViewModel.Input(
@@ -321,7 +321,7 @@ class ListPhotoViewModelTest: XCTestCase {
         let output = viewModel.transform(input, cancellables: &cancellables)
         var photos: [Photo]?
         var searchStepCount = 0
-        
+
         output.$photos
             .dropFirst()
             .sink { receivedPhotos in
@@ -341,7 +341,7 @@ class ListPhotoViewModelTest: XCTestCase {
             .sink { receivedPhotos in
                 photos = receivedPhotos
                 searchStepCount += 1
-                
+
                 switch searchStepCount {
                 case 2:
                     expectationSearch1.fulfill()
@@ -361,7 +361,7 @@ class ListPhotoViewModelTest: XCTestCase {
 
         let initialPhotos = [
             Photo.mock(author: "Tai"),
-            Photo.mock(id: "2", author: "Truong")
+            Photo.mock(id: "2", author: "Truong"),
         ]
         useCase.getPhotosResponse = initialPhotos
         loadData.send(())
@@ -373,22 +373,22 @@ class ListPhotoViewModelTest: XCTestCase {
         wait(for: [expectationSearch1], timeout: 1.0)
         XCTAssertEqual(photos?.count, 1)
         XCTAssertEqual(photos?.first?.author, "Tai")
-        
+
         searchData.send("Truong")
         wait(for: [expectationSearch2], timeout: 1.0)
         XCTAssertEqual(photos?.count, 1)
         XCTAssertEqual(photos?.first?.author, "Truong")
-        
+
         searchData.send("1")
         wait(for: [expectationSearch3], timeout: 1.0)
         XCTAssertEqual(photos?.count, 1)
         XCTAssertEqual(photos?.first?.author, "Tai")
-        
+
         searchData.send("2")
         wait(for: [expectationSearch4], timeout: 1.0)
         XCTAssertEqual(photos?.count, 1)
         XCTAssertEqual(photos?.first?.author, "Truong")
-        
+
         searchData.send("")
         wait(for: [expectationSearchEmpty], timeout: 1.0)
         XCTAssertEqual(photos?.count, 2)
@@ -398,4 +398,3 @@ class ListPhotoViewModelTest: XCTestCase {
 enum TestError: Error {
     case test
 }
-

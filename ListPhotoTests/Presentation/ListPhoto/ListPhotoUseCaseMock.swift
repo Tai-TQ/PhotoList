@@ -7,20 +7,20 @@
 
 import Combine
 import Domain
-import UIKit
 @testable import ListPhoto
+import UIKit
 
 final class ListPhotoUseCaseMock: ListPhotoUseCaseType {
     var getPhotosCalled = false
     var getPhotosResponse: [Photo] = []
     var getPhotosError: Error?
 
-    func getPhotos(pageInfo: PagingInfo) -> AnyPublisher<[Photo], Error> {
+    func getPhotos(pageInfo _: PagingInfo) -> AnyPublisher<[Photo], Error> {
         getPhotosCalled = true
         let response = getPhotosResponse
         let error = getPhotosError
         let queue = DispatchQueue(label: "ListPhotoUseCaseMock.queue")
-        
+
         if let error {
             return Deferred {
                 Future<[Photo], Error> { promise in
@@ -30,7 +30,7 @@ final class ListPhotoUseCaseMock: ListPhotoUseCaseType {
                 }
             }.eraseToAnyPublisher()
         }
-        
+
         return Deferred {
             Future<[Photo], Error> { promise in
                 queue.asyncAfter(deadline: .now() + 0.01) {
@@ -42,10 +42,11 @@ final class ListPhotoUseCaseMock: ListPhotoUseCaseType {
 
     var imageCalled = false
     var imageReturnValue = PassthroughSubject<UIImage, Error>()
-    
-    func fetchImageData(urlString: String,
-                        targetSize: CGSize,
-                        scale: CGFloat) -> AnyPublisher<UIImage, any Error> {
+
+    func fetchImageData(urlString _: String,
+                        targetSize _: CGSize,
+                        scale _: CGFloat) -> AnyPublisher<UIImage, any Error>
+    {
         imageCalled = true
         return imageReturnValue.eraseToAnyPublisher()
     }

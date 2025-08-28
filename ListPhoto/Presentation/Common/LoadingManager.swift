@@ -50,7 +50,7 @@ final class LoadingManager {
             hide()
         }
     }
-    
+
     private func currentWindowScene() -> UIWindowScene? {
         return UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }

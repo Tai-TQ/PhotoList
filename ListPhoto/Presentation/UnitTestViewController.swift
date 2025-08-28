@@ -8,7 +8,6 @@
 import UIKit
 
 final class UnitTestViewController: UIViewController {
-    
     lazy var testingLabel: UILabel = {
         let label = UILabel()
         label.text = "Testing..."
@@ -17,7 +16,7 @@ final class UnitTestViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     lazy var indicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.style = .medium
@@ -29,25 +28,24 @@ final class UnitTestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        
+
         setupViews()
         setupConstraints()
     }
-    
+
     private func setupViews() {
         view.addSubview(testingLabel)
         view.addSubview(indicator)
         indicator.startAnimating()
     }
-    
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             testingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             testingLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+
             indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            indicator.topAnchor.constraint(equalTo: testingLabel.bottomAnchor, constant: 18)
+            indicator.topAnchor.constraint(equalTo: testingLabel.bottomAnchor, constant: 18),
         ])
     }
 }
-

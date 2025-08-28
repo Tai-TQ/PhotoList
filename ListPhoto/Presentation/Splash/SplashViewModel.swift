@@ -31,7 +31,7 @@ extension SplashViewModel: ViewModel {
         input.loadData
             .first()
             .delay(for: .seconds(1), scheduler: RunLoop.main)
-            .sink { id in
+            .sink { _ in
                 navigator.toListPhoto()
             }
             .store(in: &cancellables)
