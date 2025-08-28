@@ -16,7 +16,9 @@ final class LoadingManager {
     func show() {
         guard overlayWindow == nil else { return }
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
+        guard let windowScene = currentWindowScene() else { return }
+        let window = UIWindow(windowScene: windowScene)
+        window.frame = windowScene.coordinateSpace.bounds
         window.windowLevel = .alert - 1
         window.backgroundColor = .clear
         let rootVC = UIViewController()
@@ -47,5 +49,11 @@ final class LoadingManager {
         if overlayWindow != nil {
             hide()
         }
+    }
+    
+    private func currentWindowScene() -> UIWindowScene? {
+        return UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
     }
 }

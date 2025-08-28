@@ -10,6 +10,7 @@ import UIKit
 protocol Assembler: AnyObject,
     ServiceAssembler,
     RepositoryAssembler,
+    SplashAssembler,
     ListPhotoAssembler {}
 
 final class DefaultAssembler: Assembler {}

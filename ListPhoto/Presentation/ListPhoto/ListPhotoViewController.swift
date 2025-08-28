@@ -88,6 +88,9 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+        
+//        let fpsLabel = FPSLabel(frame: CGRect(x: 20, y: 50, width: 80, height: 30))
+//        view.addSubview(fpsLabel)
     }
 
     func setupBindings() {
@@ -188,7 +191,6 @@ class ListPhotoViewController: UIViewController, ViewModelBindable {
                 self?.showError(message: error?.localizedDescription ?? "")
             }
             .store(in: &cancellables)
-
         loadData.send()
     }
 
@@ -245,3 +247,13 @@ extension ListPhotoViewController: UITableViewDelegate {
         toPhotoDetail.send(listPhoto[indexPath.row].id)
     }
 }
+//
+//extension ListPhotoViewController: UITableViewDataSourcePrefetching {
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//        <#code#>
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+//        <#code#>
+//    }
+//}
