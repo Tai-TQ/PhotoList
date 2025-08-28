@@ -6,15 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		6E901D3C2E5D37F500CEF6BA /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 6E901D3B2E5D37F500CEF6BA /* Data */; };
+		6E901D3F2E5D380B00CEF6BA /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 6E901D3E2E5D380B00CEF6BA /* Domain */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
-		6EAA64C02E5C695A00F6FA99 /* PBXContainerItemProxy */ = {
+		6E2CB79F2E5F5B2400C05080 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6EAA64A12E5C695900F6FA99 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 6EAA64A82E5C695900F6FA99;
 			remoteInfo = ListPhoto;
 		};
-		6EAA64CA2E5C695A00F6FA99 /* PBXContainerItemProxy */ = {
+		6EAA64C02E5C695A00F6FA99 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6EAA64A12E5C695900F6FA99 /* Project object */;
 			proxyType = 1;
@@ -24,26 +29,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E2CB7902E5F4A6600C05080 /* ListPhotoTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = ListPhotoTests.xctestplan; sourceTree = "<group>"; };
+		6E2CB7992E5F5B2400C05080 /* ListPhotoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListPhotoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EAA64A92E5C695900F6FA99 /* ListPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ListPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EAA64BF2E5C695A00F6FA99 /* ListPhotoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListPhotoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6EAA64C92E5C695A00F6FA99 /* ListPhotoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ListPhotoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6EAA64D12E5C695A00F6FA99 /* Exceptions for "ListPhoto" folder in "ListPhoto" target */ = {
+		6E901CAC2E5C9A9600CEF6BA /* Exceptions for "ListPhoto" folder in "ListPhoto" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Presentation/Resouces/Info.plist,
 			);
 			target = 6EAA64A82E5C695900F6FA99 /* ListPhoto */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6E2CB79A2E5F5B2400C05080 /* ListPhotoUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ListPhotoUITests;
+			sourceTree = "<group>";
+		};
 		6EAA64AB2E5C695900F6FA99 /* ListPhoto */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				6EAA64D12E5C695A00F6FA99 /* Exceptions for "ListPhoto" folder in "ListPhoto" target */,
+				6E901CAC2E5C9A9600CEF6BA /* Exceptions for "ListPhoto" folder in "ListPhoto" target */,
 			);
 			path = ListPhoto;
 			sourceTree = "<group>";
@@ -53,29 +64,26 @@
 			path = ListPhotoTests;
 			sourceTree = "<group>";
 		};
-		6EAA64CC2E5C695A00F6FA99 /* ListPhotoUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ListPhotoUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6E2CB7962E5F5B2400C05080 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EAA64A62E5C695900F6FA99 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E901D3F2E5D380B00CEF6BA /* Domain in Frameworks */,
+				6E901D3C2E5D37F500CEF6BA /* Data in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6EAA64BC2E5C695A00F6FA99 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6EAA64C62E5C695A00F6FA99 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -88,9 +96,10 @@
 		6EAA64A02E5C695900F6FA99 = {
 			isa = PBXGroup;
 			children = (
+				6E2CB7902E5F4A6600C05080 /* ListPhotoTests.xctestplan */,
 				6EAA64AB2E5C695900F6FA99 /* ListPhoto */,
 				6EAA64C22E5C695A00F6FA99 /* ListPhotoTests */,
-				6EAA64CC2E5C695A00F6FA99 /* ListPhotoUITests */,
+				6E2CB79A2E5F5B2400C05080 /* ListPhotoUITests */,
 				6EAA64AA2E5C695900F6FA99 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -100,7 +109,7 @@
 			children = (
 				6EAA64A92E5C695900F6FA99 /* ListPhoto.app */,
 				6EAA64BF2E5C695A00F6FA99 /* ListPhotoTests.xctest */,
-				6EAA64C92E5C695A00F6FA99 /* ListPhotoUITests.xctest */,
+				6E2CB7992E5F5B2400C05080 /* ListPhotoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +117,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6E2CB7982E5F5B2400C05080 /* ListPhotoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E2CB7A12E5F5B2400C05080 /* Build configuration list for PBXNativeTarget "ListPhotoUITests" */;
+			buildPhases = (
+				6E2CB7952E5F5B2400C05080 /* Sources */,
+				6E2CB7962E5F5B2400C05080 /* Frameworks */,
+				6E2CB7972E5F5B2400C05080 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6E2CB7A02E5F5B2400C05080 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6E2CB79A2E5F5B2400C05080 /* ListPhotoUITests */,
+			);
+			name = ListPhotoUITests;
+			packageProductDependencies = (
+			);
+			productName = ListPhotoUITests;
+			productReference = 6E2CB7992E5F5B2400C05080 /* ListPhotoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		6EAA64A82E5C695900F6FA99 /* ListPhoto */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6EAA64D22E5C695A00F6FA99 /* Build configuration list for PBXNativeTarget "ListPhoto" */;
@@ -125,6 +157,8 @@
 			);
 			name = ListPhoto;
 			packageProductDependencies = (
+				6E901D3B2E5D37F500CEF6BA /* Data */,
+				6E901D3E2E5D380B00CEF6BA /* Domain */,
 			);
 			productName = ListPhoto;
 			productReference = 6EAA64A92E5C695900F6FA99 /* ListPhoto.app */;
@@ -153,29 +187,6 @@
 			productReference = 6EAA64BF2E5C695A00F6FA99 /* ListPhotoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		6EAA64C82E5C695A00F6FA99 /* ListPhotoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6EAA64DA2E5C695A00F6FA99 /* Build configuration list for PBXNativeTarget "ListPhotoUITests" */;
-			buildPhases = (
-				6EAA64C52E5C695A00F6FA99 /* Sources */,
-				6EAA64C62E5C695A00F6FA99 /* Frameworks */,
-				6EAA64C72E5C695A00F6FA99 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6EAA64CB2E5C695A00F6FA99 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				6EAA64CC2E5C695A00F6FA99 /* ListPhotoUITests */,
-			);
-			name = ListPhotoUITests;
-			packageProductDependencies = (
-			);
-			productName = ListPhotoUITests;
-			productReference = 6EAA64C92E5C695A00F6FA99 /* ListPhotoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -186,14 +197,14 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
+					6E2CB7982E5F5B2400C05080 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 6EAA64A82E5C695900F6FA99;
+					};
 					6EAA64A82E5C695900F6FA99 = {
 						CreatedOnToolsVersion = 16.4;
 					};
 					6EAA64BE2E5C695A00F6FA99 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = 6EAA64A82E5C695900F6FA99;
-					};
-					6EAA64C82E5C695A00F6FA99 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 6EAA64A82E5C695900F6FA99;
 					};
@@ -208,6 +219,10 @@
 			);
 			mainGroup = 6EAA64A02E5C695900F6FA99;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6E901D3A2E5D37F500CEF6BA /* XCLocalSwiftPackageReference "Packages/Data" */,
+				6E901D3D2E5D380B00CEF6BA /* XCLocalSwiftPackageReference "Packages/Domain" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6EAA64AA2E5C695900F6FA99 /* Products */;
 			projectDirPath = "";
@@ -215,12 +230,19 @@
 			targets = (
 				6EAA64A82E5C695900F6FA99 /* ListPhoto */,
 				6EAA64BE2E5C695A00F6FA99 /* ListPhotoTests */,
-				6EAA64C82E5C695A00F6FA99 /* ListPhotoUITests */,
+				6E2CB7982E5F5B2400C05080 /* ListPhotoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6E2CB7972E5F5B2400C05080 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6EAA64A72E5C695900F6FA99 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -235,16 +257,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6EAA64C72E5C695A00F6FA99 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6E2CB7952E5F5B2400C05080 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
 		6EAA64A52E5C695900F6FA99 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,53 +281,92 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6EAA64C52E5C695A00F6FA99 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		6E2CB7A02E5F5B2400C05080 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6EAA64A82E5C695900F6FA99 /* ListPhoto */;
+			targetProxy = 6E2CB79F2E5F5B2400C05080 /* PBXContainerItemProxy */;
+		};
 		6EAA64C12E5C695A00F6FA99 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6EAA64A82E5C695900F6FA99 /* ListPhoto */;
 			targetProxy = 6EAA64C02E5C695A00F6FA99 /* PBXContainerItemProxy */;
 		};
-		6EAA64CB2E5C695A00F6FA99 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6EAA64A82E5C695900F6FA99 /* ListPhoto */;
-			targetProxy = 6EAA64CA2E5C695A00F6FA99 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		6E2CB7A22E5F5B2400C05080 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ListPhoto;
+			};
+			name = Debug;
+		};
+		6E2CB7A32E5F5B2400C05080 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ListPhoto;
+			};
+			name = Release;
+		};
 		6EAA64D32E5C695A00F6FA99 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ListPhoto/Info.plist;
+				INFOPLIST_FILE = ListPhoto/Presentation/Resouces/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoList;
+				INFOPLIST_KEY_LSApplicationCategoryType = UIUserInterfaceStyle;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhoto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -315,24 +376,35 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ListPhoto/Info.plist;
+				INFOPLIST_FILE = ListPhoto/Presentation/Resouces/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PhotoList;
+				INFOPLIST_KEY_LSApplicationCategoryType = UIUserInterfaceStyle;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhoto;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -461,14 +533,19 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ListPhoto.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ListPhoto";
 			};
 			name = Debug;
@@ -479,53 +556,35 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B6T9M2Z6TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ListPhoto.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ListPhoto";
-			};
-			name = Release;
-		};
-		6EAA64DB2E5C695A00F6FA99 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ListPhoto;
-			};
-			name = Debug;
-		};
-		6EAA64DC2E5C695A00F6FA99 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.taitruong.ListPhotoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ListPhoto;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6E2CB7A12E5F5B2400C05080 /* Build configuration list for PBXNativeTarget "ListPhotoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E2CB7A22E5F5B2400C05080 /* Debug */,
+				6E2CB7A32E5F5B2400C05080 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6EAA64A42E5C695900F6FA99 /* Build configuration list for PBXProject "ListPhoto" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -553,16 +612,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6EAA64DA2E5C695A00F6FA99 /* Build configuration list for PBXNativeTarget "ListPhotoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6EAA64DB2E5C695A00F6FA99 /* Debug */,
-				6EAA64DC2E5C695A00F6FA99 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		6E901D3A2E5D37F500CEF6BA /* XCLocalSwiftPackageReference "Packages/Data" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Data;
+		};
+		6E901D3D2E5D380B00CEF6BA /* XCLocalSwiftPackageReference "Packages/Domain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/Domain;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6E901D3B2E5D37F500CEF6BA /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
+		};
+		6E901D3E2E5D380B00CEF6BA /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6EAA64A12E5C695900F6FA99 /* Project object */;
 }
