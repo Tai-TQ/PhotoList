@@ -65,7 +65,7 @@ ListPhoto/
 
 1. **Clone the repository**
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/Tai-TQ/PhotoList.git
    cd ListPhoto
    ```
 
@@ -80,7 +80,6 @@ ListPhoto/
 
 ### Test Coverage
 - **ViewModel Tests**: Business logic and data transformation
-- **Use Case Tests**: Domain layer functionality  
 - **Mock Objects**: For dependencies and external services
 
 ## Code Quality
