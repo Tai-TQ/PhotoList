@@ -38,6 +38,7 @@ extension UIImageView {
 
         let scale = UIScreen.main.scale
 
+        /// https://www.avanderlee.com/combine/runloop-main-vs-dispatchqueue-main/#the-differences-between-runloop-main-and-dispatchqueue-main
         imageUseCase.fetchImageData(urlString: urlString, targetSize: targetSize, scale: scale)
             .subscribe(on: DispatchQueue.global(qos: .userInitiated))
             .receive(on: DispatchQueue.main)

@@ -8,6 +8,9 @@
 import os.signpost
 import UIKit
 
+let launchLog = OSLog(subsystem: "com.taitruong.ListPhoto", category: .pointsOfInterest)
+
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let assembler: Assembler = DefaultAssembler()
     var window: UIWindow?
@@ -18,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        os_signpost(.begin, log: launchLog, name: "AppLaunchToFirstFrame")
+
         if NSClassFromString("XCTest") != nil {
             window.rootViewController = UnitTestViewController()
         } else {

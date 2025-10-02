@@ -33,7 +33,7 @@ extension ViewModel {
                 isLoading.store(true)
                 return input
             }
-            .flatMap { input in
+            .map { input in
                 action(input)
                     .retry(1)
                     .catch { error -> Empty<T, Never> in
@@ -42,6 +42,7 @@ extension ViewModel {
                     }
                     .handleEvents(receiveCompletion: { _ in isLoading.store(false) })
             }
+            .switchToLatest()
             .receive(on: RunLoop.main)
             .sink { value in
                 onValue(value)
